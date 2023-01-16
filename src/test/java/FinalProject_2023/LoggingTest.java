@@ -18,11 +18,13 @@ public class LoggingTest extends AbstractTest {
         @Test
         void getRequestLogTest() {
             given()
-                    .queryParam("apiKey", getApiKey())
-                    .log().method()
-                    .log().params()
+                    .contentType("multipart/form-data")
+                    .multiPart("username", "1234")
+                    .multiPart("password", "81dc9bdb52")
                     .when()
-                    .post(" https://test-stand.gb.ru/gateway/login");
+                    .post("https://test-stand.gb.ru/login")
+                    .then()
+                    .statusCode(200);
 
             System.out.println("Запрос выполнен");
 
@@ -31,22 +33,29 @@ public class LoggingTest extends AbstractTest {
         @Test
         void postResponseLogTest(){
             given()
-                    .auth().form("1234", "81dc9bdb52")
-                    .log().all()
+                    .contentType("multipart/form-data")
+                    .multiPart("username", "1234")
+                    .multiPart("password", "81dc9bdb52")
                     .when()
                     .post("https://test-stand.gb.ru/gateway/login")
-                    .then().statusCode(200);
+                    .then()
+                    .statusCode(200);
+
+
         }
 
     /* Передаем невалидные значения для авторизации пользователя*/
     @Test
     void InvalidLogTest(){
-        given()
-                .queryParam("apiKey_2", getApiKey())
-                .log().all()
-                .when()
-                .post("https://test-stand.gb.ru/gateway/login")
-                .prettyPeek();
+
+            given()
+                    .contentType("multipart/form-data")
+                    .multiPart("username", "1234")
+                    .multiPart("password", "81dc9bdb51")
+                    .when()
+                    .post("https://test-stand.gb.ru/gateway/login")
+                    .then()
+                    .statusCode(401);
     }
 
         @Test

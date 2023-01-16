@@ -12,7 +12,7 @@ public class AbstractTest {
     private static InputStream configFile;
     private static String apiKey;
     private static String baseUrl;
-
+    private static String token;
     @BeforeAll
     static void initTest() throws IOException {
         configFile = new FileInputStream("src/main/resourses.properties");
@@ -20,7 +20,7 @@ public class AbstractTest {
 
         apiKey =  prop.getProperty("apiKey");
         baseUrl= prop.getProperty("base_url");
-
+        token=prop.getProperty("token");
     }
 
     public static String getApiKey() {
@@ -32,4 +32,9 @@ public class AbstractTest {
 
         return baseUrl;
     }
+    public static String getToken() {
+
+        return token;
+    }
+
 }
